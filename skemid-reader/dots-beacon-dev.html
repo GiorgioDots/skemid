@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DB Schema</title>
+<style>
+ 
+:root {
+  --text: #4c4f69;
+  --border: #bcc0cc;
+  --header: #e6e9ef;
+  --hover: #dce0e8;
+  --accent: #8839ef;  
+  --link: #1e66f5;    
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #fff; color: var(--text); font-family: monospace; font-size: 13px; }
+#sidebar { position: fixed; top: 0; left: 0; width: 240px; height: 100vh; overflow-y: auto; border-right: 2px solid var(--accent); padding: 8px; }
+#sidebar a { display: block; color: var(--text); text-decoration: none; padding: 2px 4px; border-left: 2px solid transparent; }
+#sidebar a:hover { background: var(--hover); border-left-color: var(--accent); }
+#main { margin-left: 240px; padding: 16px; }
+.table { margin-bottom: 40px; }
+.table h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 4px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: 4px 8px; text-align: left; vertical-align: top; }
+th { background: var(--header); }
+.badge { border: 1px solid var(--accent); color: var(--accent); padding: 0 4px; margin-right: 4px; font-size: 11px; }
+.badge.pk { background: var(--accent); color: #fff; border-color: var(--accent); }
+a.fk { color: var(--link); }
+.checks { margin-top: 8px; }
+.checks b { color: var(--accent); }
+.checks div { padding: 2px 0; }
+</style>
+</head>
+<body>
+<div id="sidebar">
+<a href="#public.permissions">public.permissions</a>
+<a href="#public.role_permissions">public.role_permissions</a>
+<a href="#public.roles">public.roles</a>
+<a href="#public.schema_migrations">public.schema_migrations</a>
+<a href="#public.site_user_roles">public.site_user_roles</a>
+<a href="#public.site_users">public.site_users</a>
+<a href="#public.sites">public.sites</a>
+<a href="#public.users">public.users</a>
+</div>
+<div id="main">
+<div class="table" id="public.permissions">
+<h2>public.permissions</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td><span class="badge pk">PK</span><span class="badge">NOT NULL</span>
+</td>
+<td>uuidv7()</td>
+</tr>
+<tr>
+<td>key</td>
+<td>text</td>
+<td><span class="badge">NOT NULL</span><span class="badge">UNIQUE</span>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>description</td>
+<td>text</td>
+<td>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>is_global</td>
+<td>boolean</td>
+<td>
+</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="table" id="public.role_permissions">
+<h2>public.role_permissions</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td><span class="badge pk">PK</span><span class="badge">NOT NULL</span>
+</td>
+<td>uuidv7()</td>
+</tr>
+<tr>
+<td>role_id</td>
+<td>uuid</td>
+<td><span class="badge">NOT NULL</span><span class="badge">FK</span><a class="fk" href="#public.roles">public.roles.id</a>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>permission_id</td>
+<td>uuid</td>
+<td><span class="badge">NOT NULL</span><span class="badge">FK</span><a class="fk" href="#public.permissions">public.permissions.id</a>
+</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="table" id="public.roles">
+<h2>public.roles</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td><span class="badge pk">PK</span><span class="badge">NOT NULL</span>
+</td>
+<td>uuidv7()</td>
+</tr>
+<tr>
+<td>site_id</td>
+<td>uuid</td>
+<td><span class="badge">NOT NULL</span><span class="badge">FK</span><a class="fk" href="#public.sites">public.sites.id</a>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>text</td>
+<td><span class="badge">NOT NULL</span>
+</td>
+<td></td>
+</tr>
+</table>
+<div class="checks"><b>unique:</b>
+<div>UNIQUE (site_id, name)</div>
+</div>
+</div>
+<div class="table" id="public.schema_migrations">
+<h2>public.schema_migrations</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+<tr>
+<td>version</td>
+<td>bigint</td>
+<td><span class="badge pk">PK</span><span class="badge">NOT NULL</span>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>dirty</td>
+<td>boolean</td>
+<td><span class="badge">NOT NULL</span>
+</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="table" id="public.site_user_roles">
+<h2>public.site_user_roles</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td><span class="badge pk">PK</span><span class="badge">NOT NULL</span>
+</td>
+<td>uuidv7()</td>
+</tr>
+<tr>
+<td>site_user_id</td>
+<td>uuid</td>
+<td><span class="badge">NOT NULL</span><span class="badge">FK</span><a class="fk" href="#public.site_users">public.site_users.id</a>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>role_id</td>
+<td>uuid</td>
+<td><span class="badge">NOT NULL</span><span class="badge">FK</span><a class="fk" href="#public.roles">public.roles.id</a>
+</td>
+<td></td>
+</tr>
+</table>
+</div>
+<div class="table" id="public.site_users">
+<h2>public.site_users</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td><span class="badge pk">PK</span><span class="badge">NOT NULL</span>
+</td>
+<td>uuidv7()</td>
+</tr>
+<tr>
+<td>site_id</td>
+<td>uuid</td>
+<td><span class="badge">NOT NULL</span><span class="badge">FK</span><a class="fk" href="#public.sites">public.sites.id</a>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>uuid</td>
+<td><span class="badge">NOT NULL</span><span class="badge">FK</span><a class="fk" href="#public.users">public.users.id</a>
+</td>
+<td></td>
+</tr>
+</table>
+<div class="checks"><b>unique:</b>
+<div>UNIQUE (site_id, user_id)</div>
+</div>
+</div>
+<div class="table" id="public.sites">
+<h2>public.sites</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td><span class="badge pk">PK</span><span class="badge">NOT NULL</span>
+</td>
+<td>uuidv7()</td>
+</tr>
+<tr>
+<td>name</td>
+<td>text</td>
+<td><span class="badge">NOT NULL</span>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>is_on</td>
+<td>boolean</td>
+<td><span class="badge">NOT NULL</span>
+</td>
+<td>false</td>
+</tr>
+<tr>
+<td>create_user_enabled</td>
+<td>boolean</td>
+<td>
+</td>
+<td>false</td>
+</tr>
+</table>
+</div>
+<div class="table" id="public.users">
+<h2>public.users</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+<tr>
+<td>id</td>
+<td>uuid</td>
+<td><span class="badge pk">PK</span><span class="badge">NOT NULL</span>
+</td>
+<td>uuidv7()</td>
+</tr>
+<tr>
+<td>external_id</td>
+<td>text</td>
+<td><span class="badge">NOT NULL</span>
+</td>
+<td></td>
+</tr>
+<tr>
+<td>is_super_admin</td>
+<td>boolean</td>
+<td>
+</td>
+<td>false</td>
+</tr>
+<tr>
+<td>first_name</td>
+<td>text</td>
+<td><span class="badge">NOT NULL</span>
+</td>
+<td>&#39;&#39;::text</td>
+</tr>
+<tr>
+<td>last_name</td>
+<td>text</td>
+<td><span class="badge">NOT NULL</span>
+</td>
+<td>&#39;&#39;::text</td>
+</tr>
+</table>
+</div>
+</div>
+</body>
+</html>

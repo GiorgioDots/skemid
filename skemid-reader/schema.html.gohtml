@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>DB Schema</title>
+<style>
+/* Catppuccin Latte accents on a white base */
+:root {
+  --text: #4c4f69;
+  --border: #bcc0cc;
+  --header: #e6e9ef;
+  --hover: #dce0e8;
+  --accent: #8839ef; /* mauve */
+  --link: #1e66f5;   /* blue */
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #fff; color: var(--text); font-family: monospace; font-size: 13px; }
+#sidebar { position: fixed; top: 0; left: 0; width: 240px; height: 100vh; overflow-y: auto; border-right: 2px solid var(--accent); padding: 8px; }
+#sidebar a { display: block; color: var(--text); text-decoration: none; padding: 2px 4px; border-left: 2px solid transparent; }
+#sidebar a:hover { background: var(--hover); border-left-color: var(--accent); }
+#main { margin-left: 240px; padding: 16px; }
+.table { margin-bottom: 40px; }
+.table h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 4px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid var(--border); padding: 4px 8px; text-align: left; vertical-align: top; }
+th { background: var(--header); }
+.badge { border: 1px solid var(--accent); color: var(--accent); padding: 0 4px; margin-right: 4px; font-size: 11px; }
+.badge.pk { background: var(--accent); color: #fff; border-color: var(--accent); }
+a.fk { color: var(--link); }
+.checks { margin-top: 8px; }
+.checks b { color: var(--accent); }
+.checks div { padding: 2px 0; }
+</style>
+</head>
+<body>
+<div id="sidebar">
+{{- range .}}
+<a href="#{{.ID}}">{{.ID}}</a>
+{{- end}}
+</div>
+<div id="main">
+{{- range .}}
+<div class="table" id="{{.ID}}">
+<h2>{{.ID}}</h2>
+<table>
+<tr><th>column</th><th>type</th><th>constraints</th><th>default</th></tr>
+{{- range .Columns}}
+<tr>
+<td>{{.Name}}</td>
+<td>{{.Type}}</td>
+<td>
+{{- if .PK}}<span class="badge pk">PK</span>{{end}}
+{{- if not .Nullable}}<span class="badge">NOT NULL</span>{{end}}
+{{- if .Unique}}<span class="badge">UNIQUE</span>{{end}}
+{{- with .FK}}<span class="badge">FK</span><a class="fk" href="#{{.Target}}">{{.Target}}.{{.Column}}</a>{{end}}
+</td>
+<td>{{with .Default}}{{.}}{{end}}</td>
+</tr>
+{{- end}}
+</table>
+{{- with .Uniques}}
+<div class="checks"><b>unique:</b>
+{{- range .}}
+<div>UNIQUE ({{range $i, $c := .}}{{if $i}}, {{end}}{{$c}}{{end}})</div>
+{{- end}}
+</div>
+{{- end}}
+{{- with .Checks}}
+<div class="checks"><b>checks:</b>
+{{- range .}}
+<div>{{.}}</div>
+{{- end}}
+</div>
+{{- end}}
+</div>
+{{- end}}
+</div>
+</body>
+</html>
