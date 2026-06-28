@@ -265,7 +265,7 @@ func main() {
 			fmt.Fprintln(os.Stderr, "db name:", err)
 			os.Exit(1)
 		}
-		path = dbName + "." + *format
+		path = dbName + ".out." + *format
 	}
 	f, err := os.Create(path)
 	if err != nil {

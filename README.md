@@ -12,37 +12,28 @@ Generate PostgreSQL schema documentation locally. Your schema never leaves your 
 
 ![screenshot](<TODO: add screenshot>)
 
-## Modules
-
-skemid is organized into modules. Today there is one:
-
-- **[db-reader](db-reader/)** — the CLI that connects to PostgreSQL, reads the schema, and generates the HTML or JSON output. This is the whole application at the moment.
-
-Future modules (a UI, etc.) are planned but not present yet.
-
 ## Install
 
-Requires Go (see [db-reader/go.mod](db-reader/go.mod) for the version). The module lives in [db-reader/](db-reader/).
+Requires Go (see [go.mod](go.mod) for the version).
 
 ```
-cd db-reader
-go build
+go build -o skemid
 ```
 
-This produces a `db-reader` binary. You can also run it without building via `go run .` from inside `db-reader/`.
+This produces a `skemid` binary. You can also run it without building via `go run .`.
 
 ## Usage
 
 The connection string is passed as a single positional argument.
 
 ```
-db-reader [-format html|json] [-o file] <postgres-connection-string>
+skemid [-format html|json] [-o file] <postgres-connection-string>
 ```
 
 Example:
 
 ```
-db-reader "postgres://user:password@localhost:5432/mydb?sslmode=disable"
+skemid "postgres://user:password@localhost:5432/mydb?sslmode=disable"
 ```
 
 Flags:
@@ -53,7 +44,7 @@ Flags:
 So the example above writes `mydb.html`. To get JSON instead:
 
 ```
-db-reader -format json "postgres://user:password@localhost:5432/mydb?sslmode=disable"
+skemid -format json "postgres://user:password@localhost:5432/mydb?sslmode=disable"
 ```
 
 ## What it generates
