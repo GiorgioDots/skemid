@@ -10,11 +10,19 @@ Generate PostgreSQL schema documentation locally. Your schema never leaves your 
 - Zero runtime dependencies in the output. The HTML is a single file with inline CSS and no JavaScript. It makes no network calls when opened.
 - One shareable file. Hand the HTML to someone or commit it; it works offline.
 
-![screenshot](<TODO: add screenshot>)
+![screenshot](./docs/screenshots/html-out.png)
 
 ## Install
 
-Requires Go (see [go.mod](go.mod) for the version).
+**Prebuilt binary.** Download the binary for your OS/arch from the [latest release](https://github.com/giorgiodots/skemid/releases/latest), then put it on your `PATH`.
+
+**With Go** (requires Go, see [go.mod](go.mod) for the version):
+
+```
+go install github.com/giorgiodots/skemid@latest
+```
+
+**From source:**
 
 ```
 go build -o skemid
@@ -39,9 +47,9 @@ skemid "postgres://user:password@localhost:5432/mydb?sslmode=disable"
 Flags:
 
 - `-format` — `html` (default) or `json`.
-- `-o` — output file. Defaults to `{db_name}.{format}` (the database's own name, queried via `current_database()`), written to the current directory.
+- `-o` — output file. Defaults to `{db_name}.out.{format}` (the database's own name, queried via `current_database()`), written to the current directory.
 
-So the example above writes `mydb.html`. To get JSON instead:
+So the example above writes `mydb.out.html`. To get JSON instead:
 
 ```
 skemid -format json "postgres://user:password@localhost:5432/mydb?sslmode=disable"
