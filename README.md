@@ -14,12 +14,12 @@ Generate PostgreSQL schema documentation locally. Your schema never leaves your 
 
 ## Install
 
-**Prebuilt binary.** Download the binary for your OS/arch from the [latest release](https://github.com/giorgiodots/skemid/releases/latest), then put it on your `PATH`.
+**Prebuilt binary.** Download the binary for your OS/arch from the [latest release](https://github.com/GiorgioDots/skemid/releases/latest), then put it on your `PATH`.
 
 **With Go** (requires Go, see [go.mod](go.mod) for the version):
 
 ```
-go install github.com/giorgiodots/skemid@latest
+go install github.com/GiorgioDots/skemid@latest
 ```
 
 **From source:**
@@ -73,4 +73,4 @@ Not implemented yet (no code for these exists today):
 
 ## License
 
-<TODO: license>
+[GNU AGPL-3.0](LICENSE).
